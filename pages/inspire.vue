@@ -21,7 +21,7 @@ export default {
         title: 'Test-Page!',
         description: 'ページ個別のディスクリプション',
         type: 'article',
-        url: 'https://example.com/test',
+        url: 'https://infallible-roentgen-3e825b.netlify.app/inspire/',
         image: 'https://example.com/img/ogp/test.jpg'
       }
     }
