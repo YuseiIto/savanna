@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import * as firebase from 'firebase/app'
 export default {
   data() {
     return {
@@ -88,26 +87,6 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js'
-    }
-  },
-  mounted() {
-    this.initFirebase()
-  },
-  methods: {
-    initFirebase() {
-      const firebaseConfig = {
-        apiKey: 'AIzaSyCctelbPQNM__kbx6qNCLnBKtp7wlYWGKk',
-        authDomain: 'savannah-app.firebaseapp.com',
-        databaseURL: 'https://savannah-app.firebaseio.com',
-        projectId: 'savannah-app',
-        storageBucket: 'savannah-app.appspot.com',
-        messagingSenderId: '1034099100594',
-        appId: '1:1034099100594:web:2eacf7b892cfd39d31b2ab',
-        measurementId: 'G-D5VKV3N6VB'
-      }
-
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig)
     }
   }
 }
