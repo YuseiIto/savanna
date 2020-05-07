@@ -90,7 +90,7 @@ export default {
       title: 'Vuetify.js'
     }
   },
-  created() {
+  mounted() {
     this.initFirebase()
   },
   methods: {
