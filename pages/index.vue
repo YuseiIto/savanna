@@ -1,5 +1,12 @@
-<template> </template>
+<template>
+  <sign-in-link />
+</template>
 
 <script>
-export default {}
+import signInLink from '../components/signInLink'
+export default {
+  components: {
+    signInLink
+  }
+}
 </script>
