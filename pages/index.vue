@@ -19,6 +19,9 @@ export default {
   methods: {
     signIn() {
       const provider = new firebase.auth.GoogleAuthProvider();
+
+      const that = this;
+
       firebase
         .auth()
         .signInWithPopup(provider)
@@ -27,15 +30,11 @@ export default {
           const token = result.credential.accessToken;
           // The signed-in user info.
           const user = result.user;
-          // ...
 
+          that.$store.commit("setAccessToken", token);
+          that.$store.commit("setUser", user);
+          that.$router.push("/register");
           console.log("token: " + token + "  User:" + user);
-        })
-        .catch(function(error) {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          const email = error.email;
-          const credential = error.credential;
         });
     }
   }
