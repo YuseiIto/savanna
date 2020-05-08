@@ -4,7 +4,7 @@
       <register @complete="evaluateState()" />
     </div>
     <div v-if="loggedIn && !needRegister" class="container">
-      <h3>Mypage</h3>
+      <myPage />
     </div>
 
     <div v-if="!loggedIn" class="container">
@@ -18,12 +18,13 @@
 <script>
 import home from "../components/home";
 import register from "../components/register";
-import firebase from "~/plugins/firebase.js";
+import myPage from "../components/myPage";
 
+import firebase from "~/plugins/firebase.js";
 export default {
-  components: { register, home },
+  components: { register, myPage, home },
   data() {
-    return { loggedIn: false, needRegister: true };
+    return { loggedIn: false, needRegister: true, userData: null };
   },
   methods: {
     evaluateState() {
@@ -44,6 +45,7 @@ export default {
                 this.needRegister = true;
               } else {
                 console.log("Already has account");
+                console.log(user);
                 this.needRegister = false;
               }
             });
@@ -75,7 +77,6 @@ export default {
 }
 
 body {
-  background-color: #156a25;
   padding-top: 30px;
   padding-bottom: 60px;
   text-align: center;
