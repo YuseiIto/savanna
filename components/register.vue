@@ -4,9 +4,7 @@
     <h6 class="title is-5">New to Savannah?</h6>
     <h3 class="title is-3">Register username</h3>
     <input type="text" placeholde="Put your username" v-model="username" />
-    <p v-if="exists" style="color:#E51616">
-      This username is already taken.
-    </p>
+    <p v-if="exists" style="color:#E51616">This username is already taken.</p>
     <input type="button" value="Register" @click="register" />
   </div>
 </template>
@@ -48,7 +46,9 @@ export default {
               lowerUsername: this.username.toLowerCase(),
               bio: "",
               followings: [],
-              projects: []
+              projects: [],
+              photoURL: firebase.auth().currentUser.photoURL,
+              name: firebase.auth().currentUser.displayName
             })
             .then(docRef => {
               that.$store.dispatch("setDbUid", docRef.id);
