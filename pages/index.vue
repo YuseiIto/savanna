@@ -1,42 +1,61 @@
 <template>
   <div>
-    <div class="container">
-      <logo />
-      <h3 class="title is-5">Sign in to start NOW!</h3>
-      <google-sign-in-btn @click="signIn" />
+    <div v-if="loggedIn && needRegister" class="container">
+      <register @complete="evaluateState()" />
     </div>
+    <div v-if="loggedIn && !needRegister" class="container">
+      <h3>Mypage</h3>
+    </div>
+
+    <div v-if="!loggedIn" class="container">
+      <home />
+    </div>
+
     <footer class="footer-white">&copy;Yusei Ito 2019</footer>
   </div>
 </template>
 
 <script>
-import logo from "~/components/logo.vue";
-import googleSignInBtn from "~/components/googleSignInBtn.vue";
+import home from "../components/home";
+import register from "../components/register";
 import firebase from "~/plugins/firebase.js";
 
 export default {
-  components: { logo, googleSignInBtn },
+  components: { register, home },
+  data() {
+    return { loggedIn: false, needRegister: true };
+  },
   methods: {
-    signIn() {
-      const provider = new firebase.auth.GoogleAuthProvider();
+    evaluateState() {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          this.loggedIn = true;
+          this.userData = user;
 
-      const that = this;
+          firebase
+            .firestore()
+            .collection("users")
+            .where("uid", "==", user.uid)
+            .get()
+            .then(snapshot => {
+              if (snapshot.empty) {
+                console.log("Doesn't have account yet");
 
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then(function(result) {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          const token = result.credential.accessToken;
-          // The signed-in user info.
-          const user = result.user;
-
-          that.$store.commit("setAccessToken", token);
-          that.$store.commit("setUser", user);
-          that.$router.push("/register");
-          console.log("token: " + token + "  User:" + user);
-        });
+                this.needRegister = true;
+              } else {
+                console.log("Already has account");
+                this.needRegister = false;
+              }
+            });
+        } else {
+          this.loggedIn = false;
+          this.userData = null;
+        }
+      });
     }
+  },
+  mounted() {
+    this.evaluateState();
   }
 };
 </script>
