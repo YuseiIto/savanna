@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :style="`display:${loadDone?'inline-block':'none'}`">
     <div v-if="loggedIn && needRegister" class="container">
       <register @complete="evaluateState()" />
     </div>
@@ -24,7 +24,12 @@ import firebase from "~/plugins/firebase.js";
 export default {
   components: { register, myPage, home },
   data() {
-    return { loggedIn: false, needRegister: true, userData: null };
+    return {
+      loggedIn: false,
+      needRegister: true,
+      userData: null,
+      loadDone: false
+    };
   },
   methods: {
     evaluateState() {
@@ -43,15 +48,18 @@ export default {
                 console.log("Doesn't have account yet");
 
                 this.needRegister = true;
+                this.loadDone = true;
               } else {
                 console.log("Already has account");
                 console.log(user);
                 this.needRegister = false;
+                this.loadDone = true;
               }
             });
         } else {
           this.loggedIn = false;
           this.userData = null;
+          this.loadDone = true;
         }
       });
     }
@@ -87,5 +95,12 @@ body {
 .footer-white {
   padding-top: 40px;
   color: #ffffff;
+}
+
+.loading {
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  background-color: #156a25;
 }
 </style>
