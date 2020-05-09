@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="new-content">
-      <h3 class="title is-2">Create new project</h3>
+      <h3 class="title is-4">Create new project</h3>
 
       <input
         class="project-name"
@@ -12,29 +12,19 @@
       />
       <p v-if="!isAvailableName" style="color:#E51616">
         {{
-          name == ""
-            ? "Username is required"
-            : "This project name is unavailable."
+        name == ""
+        ? "Username is required"
+        : "This project name is unavailable."
         }}
       </p>
 
-      <textarea
-        class="project-description"
-        v-model="description"
-        placeholder="Description"
-      ></textarea>
+      <textarea class="project-description" v-model="description" placeholder="Description"></textarea>
       <label class="new-checkbox">
         <input type="checkbox" v-model="isPrivate" />
         Make this project private
       </label>
     </div>
-    <input
-      type="button"
-      value="Create"
-      color="#ffffff"
-      class="create-btn"
-      @click="createNew"
-    />
+    <input type="button" value="Create" color="#ffffff" class="create-btn" @click="createNew" />
   </div>
 </template>
 <script>
@@ -98,31 +88,33 @@ export default {
   },
   methods: {
     createNew() {
-      const uid = firebase.auth().currentUser.uid;
-      const newProject = {
-        author: uid,
-        description: this.description,
-        isPrivate: this.isPrivate,
-        name: this.name,
-        reactions: [],
-        tags: [],
-        commits: []
-      };
+      if (this.isAvailableName) {
+        const uid = firebase.auth().currentUser.uid;
+        const newProject = {
+          author: uid,
+          description: this.description,
+          isPrivate: this.isPrivate,
+          name: this.name,
+          reactions: [],
+          tags: [],
+          commits: []
+        };
 
-      const that = this;
+        const that = this;
 
-      firebase
-        .firestore()
-        .collection("projects")
-        .add(newProject)
-        .then(docRef => {
-          that.$router.push(
-            `/${this.dbUserData.username}/${encodeURI(this.name)}`
-          );
-        })
-        .catch(function(error) {
-          console.error("Error adding document: ", error);
-        });
+        firebase
+          .firestore()
+          .collection("projects")
+          .add(newProject)
+          .then(docRef => {
+            that.$router.push(
+              `/${this.dbUserData.username}/${encodeURI(this.name)}`
+            );
+          })
+          .catch(function(error) {
+            console.error("Error adding document: ", error);
+          });
+      }
     }
   }
 };
@@ -154,7 +146,6 @@ export default {
   font-size: 20px;
   width: 300px;
   text-align: left;
-  font-weight: bold;
 }
 
 .project-name:hover {
@@ -176,7 +167,7 @@ export default {
 }
 
 .create-btn {
-  width: 500px;
+  width: 200px;
   margin-top: 50px;
   border: none;
   border-radius: 20px;
@@ -186,6 +177,7 @@ export default {
   color: #ffffff;
   font-weight: bold;
   transition: 1s;
+  box-shadow: 4px 3px 9px -4px #727272;
 }
 
 .create-btn:hover {
