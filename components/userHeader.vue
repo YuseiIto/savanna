@@ -1,18 +1,15 @@
 <template>
   <div class="user-header-container">
-    <div
-      class="avatar"
-      :style="`background-image:url('${user.photoURL}')`"
-    ></div>
+    <div class="avatar" :style="`background-image:url('${dbUser==null?'':dbUser.photoURL}')`"></div>
     <div style="display:flex; flex-direction:column; text-align:left;">
-      <h3 class="displayName">{{ user == null ? "" : user.displayName }}</h3>
+      <h3 class="displayName">{{ dbUser == null ? "" : dbUser.name }}</h3>
       <h3>@{{ dbUser == null ? "" : dbUser.username }}</h3>
     </div>
   </div>
 </template>
 <script>
 export default {
-  props: ["user", "dbUser"]
+  props: ["dbUser"]
 };
 </script>
 <style>
