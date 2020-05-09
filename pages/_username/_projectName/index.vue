@@ -1,16 +1,14 @@
 <template>
   <div class="container">
     <div class="proj-content">
-      <h3>
-        <span class="title is-4">
-          <nuxt-link :to="`/${username}`">
-            <span class="proj-username">{{ username }}</span>
-          </nuxt-link>
-        </span>
-        <span class="title is-3">/{{ projectName }}</span>
+      <h3 class="title is-4">
+        <nuxt-link :to="`/${username}`">
+          <span class="proj-username">{{ username }}</span>
+        </nuxt-link>
+        /{{ projectName }}
       </h3>
     </div>
-    <p>{{projectObj==null?"":projectObj.description}}</p>
+    <p class="prj-description">{{projectObj==null?"":projectObj.description}}</p>
   </div>
 </template>
 <script>
@@ -69,5 +67,10 @@ export default {
 .proj-username {
   color: #333333;
   border-bottom: 3px solid #333333;
+}
+
+.prj-description {
+  padding-top: 20px;
+  padding-left: 20px;
 }
 </style>
