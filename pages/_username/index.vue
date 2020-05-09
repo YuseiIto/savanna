@@ -35,7 +35,6 @@ export default {
 </script>
 <style>
 .container {
-  border: solid 1px #000000;
   display: flex;
   flex-direction: column;
 }
