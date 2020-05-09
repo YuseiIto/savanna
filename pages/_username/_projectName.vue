@@ -10,6 +10,7 @@
         <span class="title is-3">/{{ projectName }}</span>
       </h3>
     </div>
+    <p>{{projectObj==null?"":projectObj.description}}</p>
   </div>
 </template>
 <script>
@@ -20,18 +21,34 @@ export default {
       userData: null,
       username: this.$route.params.username,
       projectName: this.$route.params.projectName,
-      pojectObj: null
+      projectObj: null
     };
   },
   mounted() {
+    const that = this;
+
     firebase
       .firestore()
-      .collection("projects")
-      .where("author", "==", this.username)
-      .where("name", "==", this.projectName)
+      .collection("users")
+      .where("username", "==", this.username)
       .get()
       .then(snapshot => {
-        that.projectObj = snaphot[0].data();
+        snapshot.forEach(doc => {
+          that.userData = doc.data();
+        });
+      })
+      .then(res => {
+        firebase
+          .firestore()
+          .collection("projects")
+          .where("author", "==", this.userData.uid)
+          .where("name", "==", this.projectName)
+          .get()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              that.projectObj = doc.data();
+            });
+          });
       });
   }
 };
