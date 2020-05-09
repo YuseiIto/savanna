@@ -12,19 +12,29 @@
       />
       <p v-if="!isAvailableName" style="color:#E51616">
         {{
-        name == ""
-        ? "Username is required"
-        : "This project name is unavailable."
+          name == ""
+            ? "Project name is required"
+            : "This project name is unavailable."
         }}
       </p>
 
-      <textarea class="project-description" v-model="description" placeholder="Description"></textarea>
+      <textarea
+        class="project-description"
+        v-model="description"
+        placeholder="Description"
+      ></textarea>
       <label class="new-checkbox">
         <input type="checkbox" v-model="isPrivate" />
         Make this project private
       </label>
     </div>
-    <input type="button" value="Create" color="#ffffff" class="create-btn" @click="createNew" />
+    <input
+      type="button"
+      value="Create"
+      color="#ffffff"
+      class="create-btn"
+      @click="createNew"
+    />
   </div>
 </template>
 <script>
@@ -50,13 +60,10 @@ export default {
       firebase
         .firestore()
         .collection("users")
-        .where("uid", "==", uid)
+        .doc(uid)
         .get()
-        .then(snapshot => {
-          snapshot.forEach(function(doc) {
-            that.dbUserData = doc.data();
-            console.log(that.dbUserData);
-          });
+        .then(doc => {
+          that.dbUserData = doc.data();
         });
 
       // Get unavailable names
@@ -105,10 +112,11 @@ export default {
         firebase
           .firestore()
           .collection("projects")
-          .add(newProject)
-          .then(docRef => {
+          .doc(`${this.dbUserData.username}::${newProject.name}`)
+          .set(newProject)
+          .then(() => {
             that.$router.push(
-              `/${this.dbUserData.username}/${encodeURI(this.name)}`
+              `/${that.dbUserData.username}/${encodeURI(this.name)}`
             );
           })
           .catch(function(error) {

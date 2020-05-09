@@ -1,5 +1,5 @@
 <template>
-  <div :style="`display:${loadDone?'inline-block':'none'}`">
+  <div :style="`display:${loadDone ? 'inline-block' : 'none'}`">
     <div v-if="loggedIn && needRegister" class="container">
       <register @complete="evaluateState()" />
     </div>
@@ -41,18 +41,18 @@ export default {
           firebase
             .firestore()
             .collection("users")
-            .where("uid", "==", user.uid)
+            .doc(user.uid)
             .get()
-            .then(snapshot => {
-              if (snapshot.empty) {
-                console.log("Doesn't have account yet");
-
-                this.needRegister = true;
-                this.loadDone = true;
-              } else {
+            .then(doc => {
+              if (doc.exists) {
                 console.log("Already has account");
                 console.log(user);
                 this.needRegister = false;
+                this.loadDone = true;
+              } else {
+                console.log("Doesn't have account yet");
+
+                this.needRegister = true;
                 this.loadDone = true;
               }
             });
@@ -77,7 +77,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  align-items: center;
   text-align: center;
   background-color: #ffffff;
   border-radius: 13px;
