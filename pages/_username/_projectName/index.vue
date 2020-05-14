@@ -8,18 +8,29 @@
         /{{ projectName }}
       </h3>
     </div>
-    <p class="prj-description">{{projectObj==null?"":projectObj.description}}</p>
+    <p class="prj-description">
+      {{ projectData == null ? "" : projectData.description }}
+    </p>
+
+    <div v-if="projectData != null">
+      <savannah :projectData="projectData" />
+      <commit-logs :projectData="projectData" />
+    </div>
   </div>
 </template>
 <script>
 import firebase from "~/plugins/firebase";
+import savannah from "~/components/savannah";
+import commitLogs from "~/components/commitLogs";
+
 export default {
+  components: { savannah, commitLogs },
   data() {
     return {
       userData: null,
       username: this.$route.params.username,
       projectName: this.$route.params.projectName,
-      projectObj: null
+      projectData: null
     };
   },
   mounted() {
@@ -39,13 +50,10 @@ export default {
         firebase
           .firestore()
           .collection("projects")
-          .where("author", "==", this.userData.uid)
-          .where("name", "==", this.projectName)
+          .doc(`${this.username}::${this.projectName}`)
           .get()
-          .then(snapshot => {
-            snapshot.forEach(doc => {
-              that.projectObj = doc.data();
-            });
+          .then(doc => {
+            that.projectData = doc.data();
           });
       });
   }
@@ -53,9 +61,8 @@ export default {
 </script>
 <style>
 .container {
-  width: 800px;
-  border: #000000 solid 2px;
-  padding: 30px;
+  width: 80%;
+  padding-top: 30px;
 }
 .proj-content {
   display: flex;
