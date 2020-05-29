@@ -8,12 +8,11 @@
         /{{ projectName }}
       </h3>
     </div>
-    <p class="prj-description">
-      {{ projectData == null ? "" : projectData.description }}
-    </p>
+    <p class="prj-description">{{ projectData == null ? "" : projectData.description }}</p>
 
     <div v-if="projectData != null">
       <savannah :projectData="projectData" />
+      <create-button label="New commit" :to="`/${username}/${projectName}/commit`" />
       <commit-logs :projectData="projectData" />
     </div>
   </div>
@@ -22,9 +21,10 @@
 import firebase from "~/plugins/firebase";
 import savannah from "~/components/savannah";
 import commitLogs from "~/components/commitLogs";
+import createButton from "~/components/createButton";
 
 export default {
-  components: { savannah, commitLogs },
+  components: { savannah, commitLogs, createButton },
   data() {
     return {
       userData: null,
