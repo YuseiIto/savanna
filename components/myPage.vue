@@ -1,16 +1,18 @@
 <template>
   <div style="display:flex;flex-direction: column;">
     <userHeader :user="userData" :dbUser="dbUserData" />
-    <nuxt-link to="/new"><a class="new-project">New Project</a></nuxt-link>
+    <create-button label="New Project" to="/new" />
   </div>
 </template>
 <script>
 import firebase from "../plugins/firebase";
 import userHeader from "./userHeader";
+import createButton from "./createButton";
 
 export default {
   components: {
-    userHeader
+    userHeader,
+    createButton
   },
   data() {
     return { userData: null, dbUserData: null };
@@ -32,22 +34,4 @@ export default {
   }
 };
 </script>
-<style>
-.new-project {
-  text-decoration: none;
-  color: #ffffff;
-  font-weight: bold;
-  padding: 10px;
-  background-color: #0095f6;
-  border-radius: 5px;
-  padding-left: 70px;
-  padding-right: 70px;
-  transition: 0.7s;
-  box-shadow: 4px 3px 9px -4px #727272;
-}
 
-.new-project:hover {
-  color: #ffffff;
-  background-color: #0095f6bb;
-}
-</style>
