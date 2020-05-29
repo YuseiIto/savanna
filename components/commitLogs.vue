@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="text-align:left">
     <h3 class="recent-activity">Recent Activity</h3>
     <table class="commit-logs-tbl">
       <div class="month" v-for="(month, mIndex) in model" :key="mIndex">
@@ -10,20 +10,19 @@
           <td class="day-label">{{ day.label }}</td>
           <td>
             <ul>
-              <li v-for="(commit, cIndex) in day.commits" :key="cIndex">
-                {{ commit.message }}
-              </li>
+              <li v-for="(commit, cIndex) in day.commits" :key="cIndex">{{ commit.message }}</li>
             </ul>
-          </td>
-          <td v-if="day.images.length > 0" class="commit-images">
-            <div
-              v-for="(item, index) in day.images"
-              :key="index"
-              class="commit-img"
-              :style="`background-image:url('${item}')`"
-            >
-              <!--Div box for image-->
-            </div>
+
+            <ul v-if="day.images.length > 0" class="commit-images">
+              <div
+                v-for="(item, index) in day.images"
+                :key="index"
+                class="commit-img"
+                :style="`background-image:url('${item}')`"
+              >
+                <!--Div box for image-->
+              </div>
+            </ul>
           </td>
         </tr>
       </div>
@@ -146,5 +145,12 @@ export default {
 
 .commit-images {
   display: flex;
+}
+
+.day {
+  border-bottom: 1px dotted #333333a0;
+  margin-bottom: 40px;
+  padding-top: 20px;
+  margin-top: 30px;
 }
 </style>
