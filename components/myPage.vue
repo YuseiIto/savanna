@@ -2,20 +2,22 @@
   <div style="display:flex;flex-direction: column;">
     <userHeader :user="userData" :dbUser="dbUserData" />
     <create-button label="New Project" to="/new" />
+    <user-projects :projects="userProjects" :username="dbUserData!=null?dbUserData.username:''" />
   </div>
 </template>
 <script>
 import firebase from "../plugins/firebase";
 import userHeader from "./userHeader";
 import createButton from "./createButton";
-
+import userProjects from "./userProjects";
 export default {
   components: {
     userHeader,
-    createButton
+    createButton,
+    userProjects
   },
   data() {
-    return { userData: null, dbUserData: null };
+    return { userData: null, dbUserData: null, userProjects: [] };
   },
   created() {
     this.userData = firebase.auth().currentUser;
@@ -30,6 +32,19 @@ export default {
           that.dbUserData = doc.data();
           console.log(that.dbUserData);
         });
+
+        // Get projetcs
+        const projects = [];
+        firebase
+          .firestore()
+          .collection("projects")
+          .where("author", "==", this.userData.uid)
+          .get()
+          .then(snapshot => {
+            snapshot.forEach(e => {
+              that.userProjects.push(e.data());
+            });
+          });
       });
   }
 };
