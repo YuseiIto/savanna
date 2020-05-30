@@ -3,7 +3,7 @@
     <ul>
       <li v-for="project in projects" :key="project.name" class="project-container">
         <div style="text-align:left;">
-          <nuxt-link :to="`/${$route.params.username}/${project.name}`">
+          <nuxt-link :to="`/${$route.params.username||username}/${project.name}`">
             <h3
               class="title is-6"
               style="margin-bottom:10px;border-bottom:1px solid #333333; padding-bottom:5px;"
@@ -20,7 +20,7 @@
 <script>
 import savannah from "./savannah";
 export default {
-  props: ["projects"],
+  props: ["projects", "username"],
   components: {
     savannah
   },
